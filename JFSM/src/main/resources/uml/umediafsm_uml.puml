@@ -1,0 +1,56 @@
+@startuml
+
+'left to right direction
+
+package fsm <<Node>> {
+    class StateManager
+
+    package module <<Node>> {
+        class StateHandler
+        class StateTaskManager
+        class StateScheduler
+
+        package module_base <<Node>> {
+            class StateTaskUnit
+            class EventCondition
+        }
+    }
+
+    package unit <<Node>> {
+        class StateUnit
+    }
+
+    package event <<Node>> {
+        class StateEventManager
+
+        package retry <<Node>> {
+            class RetryManager
+
+            package retry_base <<Node>> {
+                class RetryStatus
+                class RetryUnit
+            }
+        }
+
+        package event_base <<Node>> {
+            class StateEvent
+            class CallBack
+        }
+    }
+
+    package info <<Node>> {
+        class ResultCode
+    }
+}
+
+StateManager <|-- StateHandler
+StateManager <|-- StateUnit
+
+StateHandler <|-- StateEventManager
+StateHandler <|-- EventCondition
+
+StateTaskManager <|-- StateScheduler
+StateTaskManager <|-- StateTaskUnit
+StateEventManager <|-- StateEvent
+
+@enduml
