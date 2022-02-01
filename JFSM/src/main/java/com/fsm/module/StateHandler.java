@@ -1,10 +1,10 @@
-package com.fsm.module;
+package JFSM.JFSM.src.main.java.com.fsm.module;
 
-import com.fsm.event.StateEventManager;
-import com.fsm.event.base.CallBack;
-import com.fsm.event.base.StateEvent;
-import com.fsm.module.base.EventCondition;
-import com.fsm.unit.StateUnit;
+import JFSM.JFSM.src.main.java.com.fsm.event.StateEventManager;
+import JFSM.JFSM.src.main.java.com.fsm.event.base.CallBack;
+import JFSM.JFSM.src.main.java.com.fsm.event.base.StateEvent;
+import JFSM.JFSM.src.main.java.com.fsm.module.base.EventCondition;
+import JFSM.JFSM.src.main.java.com.fsm.unit.StateUnit;
 
 import java.util.HashSet;
 import java.util.List;

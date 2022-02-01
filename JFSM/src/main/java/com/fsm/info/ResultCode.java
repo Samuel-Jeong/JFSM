@@ -1,4 +1,4 @@
-package com.fsm.info;
+package JFSM.JFSM.src.main.java.com.fsm.info;
 
 /**
  * @class public class ResultCode

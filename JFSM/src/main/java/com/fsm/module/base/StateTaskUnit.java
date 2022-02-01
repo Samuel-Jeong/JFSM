@@ -1,10 +1,10 @@
-package com.fsm.module.base;
+package JFSM.JFSM.src.main.java.com.fsm.module.base;
 
-import com.fsm.event.retry.RetryManager;
-import com.fsm.event.retry.base.RetryStatus;
-import com.fsm.module.StateHandler;
-import com.fsm.module.StateTaskManager;
-import com.fsm.unit.StateUnit;
+import JFSM.JFSM.src.main.java.com.fsm.event.retry.RetryManager;
+import JFSM.JFSM.src.main.java.com.fsm.event.retry.base.RetryStatus;
+import JFSM.JFSM.src.main.java.com.fsm.module.StateHandler;
+import JFSM.JFSM.src.main.java.com.fsm.module.StateTaskManager;
+import JFSM.JFSM.src.main.java.com.fsm.unit.StateUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
