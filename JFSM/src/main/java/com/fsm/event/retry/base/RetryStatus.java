@@ -1,4 +1,4 @@
-package JFSM.JFSM.src.main.java.com.fsm.event.retry.base;
+package com.fsm.event.retry.base;
 
 /**
  * @class public enum RetryStatus

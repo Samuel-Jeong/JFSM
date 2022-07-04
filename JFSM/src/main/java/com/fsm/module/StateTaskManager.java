@@ -1,10 +1,10 @@
-package JFSM.JFSM.src.main.java.com.fsm.module;
+package com.fsm.module;
 
-import JFSM.JFSM.src.main.java.com.fsm.StateManager;
-import JFSM.JFSM.src.main.java.com.fsm.event.retry.RetryManager;
-import JFSM.JFSM.src.main.java.com.fsm.info.ResultCode;
-import JFSM.JFSM.src.main.java.com.fsm.module.base.EventCondition;
-import JFSM.JFSM.src.main.java.com.fsm.module.base.StateTaskUnit;
+import com.fsm.StateManager;
+import com.fsm.event.retry.RetryManager;
+import com.fsm.info.ResultCode;
+import com.fsm.module.base.EventCondition;
+import com.fsm.module.base.StateTaskUnit;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

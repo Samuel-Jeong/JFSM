@@ -1,10 +1,10 @@
-package JFSM.JFSM.src.main.java.com.fsm.module;
+package com.fsm.module;
 
-import JFSM.JFSM.src.main.java.com.fsm.StateManager;
-import JFSM.JFSM.src.main.java.com.fsm.event.base.StateEvent;
-import JFSM.JFSM.src.main.java.com.fsm.module.base.AbstractStateTaskUnit;
-import JFSM.JFSM.src.main.java.com.fsm.module.base.EventCondition;
-import JFSM.JFSM.src.main.java.com.fsm.unit.StateUnit;
+import com.fsm.StateManager;
+import com.fsm.event.base.StateEvent;
+import com.fsm.module.base.AbstractStateTaskUnit;
+import com.fsm.module.base.EventCondition;
+import com.fsm.unit.StateUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

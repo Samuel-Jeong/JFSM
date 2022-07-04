@@ -1,4 +1,4 @@
-package JFSM.JFSM.src.main.java.com.fsm.event.base;
+package com.fsm.event.base;
 
 import java.util.Arrays;
 import java.util.HashSet;

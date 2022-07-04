@@ -1,5 +1,6 @@
-package JFSM.JFSM.src.main.java.com.fsm.event.retry.base;
+package com.fsm.event.retry.base;
 
+import com.fsm.event.retry.base.RetryStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

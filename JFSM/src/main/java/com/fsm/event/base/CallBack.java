@@ -1,7 +1,7 @@
-package JFSM.JFSM.src.main.java.com.fsm.event.base;
+package com.fsm.event.base;
 
-import JFSM.JFSM.src.main.java.com.fsm.StateManager;
-import JFSM.JFSM.src.main.java.com.fsm.unit.StateUnit;
+import com.fsm.StateManager;
+import com.fsm.unit.StateUnit;
 
 /**
  * @class public abstract class CallBack
