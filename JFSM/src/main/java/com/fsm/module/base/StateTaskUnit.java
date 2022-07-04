@@ -60,26 +60,32 @@ public class StateTaskUnit extends AbstractStateTaskUnit {
                 stateUnit
         );
 
-        stateTaskManager.removeStateTaskUnit(stateHandler.getName(), name);
+        // Next event key 가 초기에 할당된 key 와 같으면, 현재 이벤트 삭제하고 다시 동일한 이벤트를 스케줄링한다.
+        // (next event key 가 같다는 의미는 천이가 실패되었다는 의미이다. > 같은 이벤트로 재시도 필요하다.)
+        // (다르다는 의미는 천이가 성공했다는 의미이다. > 재시도 필요 없다.)
+        String nextEventKey = stateUnit.getNextEventKey();
+        if (nextEventKey != null && nextEventKey.equals(name)) {
+            stateTaskManager.removeStateTaskUnit(stateHandler.getName(), name);
 
-        // 2) 재시도 진행 중이면, 동일한 StateTaskUnit 정보로 StateTaskUnit 을 스케줄링한다.
-        RetryManager retryManager = stateTaskManager.getRetryManager();
-        RetryStatus retryStatus = retryManager.getRetryStatus(name);
+            // 2) 재시도 진행 중이면, 동일한 StateTaskUnit 정보로 StateTaskUnit 을 스케줄링한다.
+            RetryManager retryManager = stateTaskManager.getRetryManager();
+            RetryStatus retryStatus = retryManager.getRetryStatus(name);
 
-        if (retryStatus == RetryStatus.ONGOING) {
-            stateTaskManager.addStateTaskUnit(
-                    stateHandler.getName(),
-                    name,
-                    new StateTaskUnit(
-                            name,
-                            stateTaskManager,
-                            stateHandler,
-                            event,
-                            stateUnit,
-                            getInterval()
-                    ),
-                    0
-            );
+            if (retryStatus == RetryStatus.ONGOING) {
+                stateTaskManager.addStateTaskUnit(
+                        stateHandler.getName(),
+                        name,
+                        new StateTaskUnit(
+                                name,
+                                stateTaskManager,
+                                stateHandler,
+                                event,
+                                stateUnit,
+                                getInterval()
+                        ),
+                        0
+                );
+            }
         }
     }
 

@@ -85,21 +85,21 @@ public class StateEventManager {
         }
 
         synchronized (eventMap) {
-            stateEvent = new StateEvent(
-                    event,
-                    fromStateSet,
-                    toState,
-                    successCallBack,
-                    failCallBack,
-                    nextEvent,
-                    delay,
-                    nextEventRetryCount,
-                    nextEventCallBackParams
-            );
+            stateEvent = new StateEventBuilder()
+                    .setName(event)
+                    .setFromStateSet(fromStateSet)
+                    .setToState(toState)
+                    .setSuccessCallBack(successCallBack)
+                    .setFailCallBack(failCallBack)
+                    .setNextEvent(nextEvent)
+                    .setNextEventInterval(delay)
+                    .setNextEventRetryCount(nextEventRetryCount)
+                    .setNextEventCallBackParams(nextEventCallBackParams)
+                    .build();
 
             boolean result = eventMap.putIfAbsent(event, stateEvent) == null;
             if (result) {
-                logger.debug("[{}] Success to add state. (event={}, fromState={}, toState={})",
+                logger.trace("[{}] Success to add state. (event={}, fromState={}, toState={})",
                         ResultCode.SUCCESS_ADD_STATE, stateEvent, fromStateSet, toState
                 );
             } else {
@@ -260,12 +260,13 @@ public class StateEventManager {
             stateUnit.logicLock.unlock();
             logger.debug("[>UNLOCK] StateUnit=[{}], lockAddr=[{}]", stateUnit, stateUnit.logicLock);
 
+            // From state 가 현재 상태와 다르면 상태 천이 성공
             if (curFromState != null) {
-                // 재시도 로직 수행 중에는 스케줄링 관련 로직은 수행되지 않는다.
+                // 재시도 로직 수행 중이지 않으면 스케줄링 로직 수행
                 if (!isRetryOngoing) {
-                    // 2) Prev Event 취소
+                    // 2) Current Event 취소
                     // 만약 현재 상태가 기대되는 상태 천이의 현재 상태이면
-                    // 이전에 등록된 nextEvent 를 취소시킨다.
+                    // 이전에 등록된 nextEvent (지금 상태 천이된 이벤트) 를 취소시킨다.
                     if (stateUnit.getNextEventKey() != null) {
                         stateTaskManager.removeStateTaskUnit(
                                 stateHandler.getName(),
@@ -278,6 +279,7 @@ public class StateEventManager {
                     // 3) Next Event 추가
                     // 다음 상태에 대해 기대되는 상태 천이(또는 이벤트)가
                     // 일정 시간 이후에 발생하지 않을 경우 지정한 다음 이벤트를 발생시킨다.
+                    // (현재 상태 천이 이벤트는 성공, 다음 상태 천이 이벤트에 대한 스케줄링 진행 (정의되어 있다면))
                     if (nextEvent != null) {
                         int nextEventInterval = stateEvent.getNextEventInterval();
                         int nextEventRetryCount = stateEvent.getNextEventRetryCount();
@@ -300,8 +302,8 @@ public class StateEventManager {
                 }
             }
 
-            // 4) Success CallBack 실행
-            // From state 가 현재 상태와 다르면 실패
+            // 4) CallBack 실행
+            // From state 가 현재 상태와 다르면 상태 천이 실패
             if (curFromState == null) {
                 logger.warn("[{}] ({}) Fail to transit. From state is not matched. (event={}, fromState: cur={}, expected={}, stateUnit={})",
                         ResultCode.FAIL_TRANSIT_STATE, stateHandler.getName(), event, stateUnit.getCurState(), fromStateSet, stateUnit
@@ -316,6 +318,7 @@ public class StateEventManager {
                 }
             } else {
                 if (!isRetryTransitionCompleted) {
+                    // Success CallBack 실행
                     CallBack successCallBack = stateEvent.getSuccessCallBack();
                     if (successCallBack != null) {
                         stateUnit.setSuccessCallBackResult(

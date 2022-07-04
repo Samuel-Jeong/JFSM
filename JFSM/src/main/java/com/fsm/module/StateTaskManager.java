@@ -221,9 +221,28 @@ public class StateTaskManager {
         }
     }
 
-    public void stop ( ) {
-        for (ScheduledFuture<?> scheduledFuture : stateTaskUnitMap.values()) {
-            scheduledFuture.cancel(true);
+    public int getStateTaskUnitMapSize() {
+        try {
+            stateTaskUnitMapLock.lock();
+            return stateTaskUnitMap.size();
+        } catch (Exception e) {
+            logger.warn("[{}] () () StateTaskManager.getStateTaskUnitMapSize.Exception", ResultCode.FAIL_GET_STATE_TASK_UNIT, e);
+            return 0;
+        } finally {
+            stateTaskUnitMapLock.unlock();
+        }
+    }
+
+    public void stop () {
+        try {
+            stateTaskUnitMapLock.lock();
+            for (ScheduledFuture<?> scheduledFuture : stateTaskUnitMap.values()) {
+                scheduledFuture.cancel(true);
+            }
+        } catch (Exception e) {
+            logger.warn("[{}] () () StateTaskManager.stop.Exception", ResultCode.FAIL_REMOVE_STATE_TASK_UNIT, e);
+        } finally {
+            stateTaskUnitMapLock.unlock();
         }
 
         executor.shutdown();
