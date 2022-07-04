@@ -4,6 +4,7 @@ import com.fsm.event.base.CallBack;
 import com.fsm.event.base.StateEvent;
 
 import java.util.HashSet;
+import java.util.Set;
 
 public class StateEventBuilder {
 
@@ -18,7 +19,7 @@ public class StateEventBuilder {
         return this;
     }
 
-    public StateEventBuilder setFromStateSet(HashSet<String> fromStateSet) {
+    public StateEventBuilder setFromStateSet(Set<String> fromStateSet) {
         stateEvent.setFromStateSet(fromStateSet);
         return this;
     }

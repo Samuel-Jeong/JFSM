@@ -2,6 +2,7 @@ package com.fsm.event.base;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @class public class StateEvent
@@ -13,7 +14,7 @@ public class StateEvent {
     // Event name
     private String name;
     // From state
-    private HashSet<String> fromStateSet;
+    private Set<String> fromStateSet;
     // To state
     private String toState;
     // Success CallBack
@@ -44,11 +45,11 @@ public class StateEvent {
         this.name = name;
     }
 
-    public HashSet<String> getFromStateSet() {
+    public Set<String> getFromStateSet() {
         return fromStateSet;
     }
 
-    public void setFromStateSet(HashSet<String> fromStateSet) {
+    public void setFromStateSet(Set<String> fromStateSet) {
         this.fromStateSet = fromStateSet;
     }
 

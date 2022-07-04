@@ -54,7 +54,7 @@ public class StateEventManager {
      * @return 성공 시 true, 실패 시 false 반환
      */
     public boolean addEvent(String event,
-                            HashSet<String> fromStateSet,
+                            Set<String> fromStateSet,
                             String toState,
                             CallBack successCallBack,
                             CallBack failCallBack,
@@ -212,7 +212,7 @@ public class StateEventManager {
         }
 
         String curFromState = null;
-        HashSet<String> fromStateSet = stateEvent.getFromStateSet();
+        Set<String> fromStateSet = stateEvent.getFromStateSet();
         String toState = stateEvent.getToState();
         String nextEvent = stateEvent.getNextEvent();
         boolean isRetryOngoing = false;

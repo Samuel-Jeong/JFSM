@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @class public class StateScheduler
@@ -51,7 +52,7 @@ public class StateScheduler extends AbstractStateTaskUnit {
             StateEvent stateEvent = eventCondition.getStateEvent();
             if (stateEvent == null) { return; }
 
-            HashSet<String> fromStateSet = stateEvent.getFromStateSet();
+            Set<String> fromStateSet = stateEvent.getFromStateSet();
 
             // 1) 현재 StateManager 에 등록된 StateUnit Map 을 가져온다.
             Map<String, StateUnit> stateUnitMap = stateManager.cloneStateUnitMap();
