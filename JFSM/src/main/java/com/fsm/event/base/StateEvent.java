@@ -11,46 +11,28 @@ import java.util.HashSet;
 public class StateEvent {
 
     // Event name
-    private final String name;
+    private String name;
     // From state
-    private final HashSet<String> fromStateSet;
+    private HashSet<String> fromStateSet;
     // To state
-    private final String toState;
+    private String toState;
     // Success CallBack
-    private final CallBack successCallBack;
+    private CallBack successCallBack;
     // Fail CallBack
-    private final CallBack failCallBack;
+    private CallBack failCallBack;
 
     // Next event
-    private final String nextEvent;
+    private String nextEvent;
     // Interval time for triggering the next event
-    private final int nextEventInterval;
+    private int nextEventInterval;
     // Next Event Retry Count
-    private final int nextEventRetryCount;
+    private int nextEventRetryCount;
     // Parameters for the callback
-    private final Object[] nextEventCallBackParams;
+    private Object[] nextEventCallBackParams;
 
     ////////////////////////////////////////////////////////////////////////////////
 
-    public StateEvent(String name,
-                      HashSet<String> fromStateSet,
-                      String toState,
-                      CallBack successCallBack,
-                      CallBack failCallBack,
-                      String nextEvent,
-                      int delay,
-                      int nextEventRetryCount,
-                      Object... nextEventCallBackParams) {
-        this.name = name;
-        this.fromStateSet = fromStateSet;
-        this.toState = toState;
-        this.successCallBack = successCallBack;
-        this.failCallBack = failCallBack;
-        this.nextEvent = nextEvent;
-        this.nextEventInterval = Math.max(delay, 0);
-        this.nextEventRetryCount = Math.max(nextEventRetryCount, 0);
-        this.nextEventCallBackParams = nextEventCallBackParams;
-    }
+    public StateEvent() {}
 
     ////////////////////////////////////////////////////////////////////////////////
 
@@ -58,36 +40,72 @@ public class StateEvent {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public HashSet<String> getFromStateSet() {
         return fromStateSet;
+    }
+
+    public void setFromStateSet(HashSet<String> fromStateSet) {
+        this.fromStateSet = fromStateSet;
     }
 
     public String getToState() {
         return toState;
     }
 
+    public void setToState(String toState) {
+        this.toState = toState;
+    }
+
     public CallBack getSuccessCallBack() {
         return successCallBack;
+    }
+
+    public void setSuccessCallBack(CallBack successCallBack) {
+        this.successCallBack = successCallBack;
     }
 
     public CallBack getFailCallBack() {
         return failCallBack;
     }
 
+    public void setFailCallBack(CallBack failCallBack) {
+        this.failCallBack = failCallBack;
+    }
+
     public String getNextEvent() {
         return nextEvent;
+    }
+
+    public void setNextEvent(String nextEvent) {
+        this.nextEvent = nextEvent;
     }
 
     public int getNextEventInterval() {
         return nextEventInterval;
     }
 
+    public void setNextEventInterval(int nextEventInterval) {
+        this.nextEventInterval = nextEventInterval;
+    }
+
     public int getNextEventRetryCount() {
         return nextEventRetryCount;
     }
 
+    public void setNextEventRetryCount(int nextEventRetryCount) {
+        this.nextEventRetryCount = nextEventRetryCount;
+    }
+
     public Object[] getNextEventCallBackParams() {
         return nextEventCallBackParams;
+    }
+
+    public void setNextEventCallBackParams(Object[] nextEventCallBackParams) {
+        this.nextEventCallBackParams = nextEventCallBackParams;
     }
 
     @Override

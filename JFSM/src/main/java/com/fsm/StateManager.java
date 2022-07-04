@@ -93,6 +93,12 @@ public class StateManager {
         }
     }
 
+    public int getStateUnitMapSize () {
+        synchronized (stateUnitMap) {
+            return stateUnitMap.size();
+        }
+    }
+
     public Map<String, StateUnit> cloneStateUnitMap() {
         HashMap<String, StateUnit> cloneMap;
         synchronized (stateUnitMap) {

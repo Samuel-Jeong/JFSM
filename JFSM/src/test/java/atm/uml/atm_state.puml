@@ -1,0 +1,45 @@
+@startuml
+
+'left to right direction
+
+package idle <<Cloud>> {
+}
+
+package ready <<Cloud>> {
+}
+
+package error <<Cloud>> {
+}
+
+package card_read <<Cloud>> {
+}
+
+package pin_entry <<Cloud>> {
+}
+
+package verification <<Cloud>> {
+}
+
+package session <<Cloud>> {
+}
+
+
+idle --> ready : run
+error --> idle : run_fail
+
+ready --> card_read : insert_card
+ready --> idle : insert_card_fail
+
+card_read --> pin_entry : read_card
+card_read --> error : read_card_fail
+
+pin_entry --> verification : input_pin
+pin_entry --> error : input_pin_fail
+
+verification --> error : verify_account_fail
+verification --> pin_entry : verify_account_wrong
+verification --> session : verify_account_success
+
+session --> idle : exit
+
+@enduml
