@@ -1,4 +1,4 @@
-package com.fsm.module.base;
+package JFSM.JFSM.src.main.java.com.fsm.module.base;
 
 /**
  * @author jamesj

@@ -1,8 +1,8 @@
-package com.fsm;
+package JFSM.JFSM.src.main.java.com.fsm;
 
-import com.fsm.module.StateHandler;
-import com.fsm.module.StateTaskManager;
-import com.fsm.unit.StateUnit;
+import JFSM.JFSM.src.main.java.com.fsm.module.StateHandler;
+import JFSM.JFSM.src.main.java.com.fsm.module.StateTaskManager;
+import JFSM.JFSM.src.main.java.com.fsm.unit.StateUnit;
 
 import java.util.HashMap;
 import java.util.Map;

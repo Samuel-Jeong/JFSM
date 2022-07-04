@@ -1,6 +1,6 @@
-package com.fsm.unit;
+package JFSM.JFSM.src.main.java.com.fsm.unit;
 
-import com.fsm.info.ResultCode;
+import JFSM.JFSM.src.main.java.com.fsm.info.ResultCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
