@@ -4,7 +4,6 @@ import com.fsm.event.retry.RetryManager;
 import com.fsm.event.retry.base.RetryStatus;
 import com.fsm.module.StateHandler;
 import com.fsm.module.StateTaskManager;
-import com.fsm.module.base.AbstractStateTaskUnit;
 import com.fsm.unit.StateUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

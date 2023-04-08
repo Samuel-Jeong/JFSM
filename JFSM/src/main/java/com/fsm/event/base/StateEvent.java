@@ -1,7 +1,6 @@
 package com.fsm.event.base;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 
 /**

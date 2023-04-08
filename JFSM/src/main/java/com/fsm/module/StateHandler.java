@@ -3,7 +3,6 @@ package com.fsm.module;
 import com.fsm.event.StateEventManager;
 import com.fsm.event.base.CallBack;
 import com.fsm.event.base.StateEvent;
-import com.fsm.module.StateTaskManager;
 import com.fsm.module.base.EventCondition;
 import com.fsm.unit.StateUnit;
 

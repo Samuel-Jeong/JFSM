@@ -3,7 +3,6 @@ package com.fsm.event;
 import com.fsm.event.base.CallBack;
 import com.fsm.event.base.StateEvent;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class StateEventBuilder {
