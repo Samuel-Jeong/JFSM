@@ -22,10 +22,8 @@ public abstract class CallBack {
 
     ////////////////////////////////////////////////////////////////////////////////
 
-    public Object callBackFunc(StateUnit stateUnit) {
-        // Must be implemented.
-        return null;
-    }
+    // Must be implemented.
+    abstract public Object callBackFunc(StateUnit stateUnit);
 
     public StateManager getStateManager() {
         return stateManager;
