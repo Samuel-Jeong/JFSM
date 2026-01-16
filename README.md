@@ -13,17 +13,119 @@ JFSM은 자바 기반의 경량 상태 머신(Finite State Machine) 프레임워
 ## STRUCTURE
 ![스크린샷 2022-01-28 오전 10 26 24](https://user-images.githubusercontent.com/37236920/151470924-c61a46f8-5ee0-428e-90fa-1ff099a5d13e.png)
 
-## 목차
-- 소개
-- 빠른 시작
-- 핵심 개념
-- 사용 방법
-- 고급 주제: 지연/재시도, 조건, 스케줄링
-- 예제: ATM 데모
-- 테스트 실행
-- Maven/빌드
-- FAQ
-- 라이선스
+## 전체 컴포넌트 구조 다이어그램
+```mermaid
+flowchart TB
+  subgraph JFSM["JFSM Core"]
+    SM["StateManager<br/>- FSM 최상위 매니저<br/>- 스레드풀/태스크관리<br/>- Handler 등록/조회/삭제"]
+    SH["StateHandler<br/>- 도메인 그룹(유형) 단위<br/>- 상태/이벤트/전이 등록 API 제공"]
+    SEM["StateEventManager<br/>- 전이 테이블(Transition) 관리<br/>- 이벤트 처리 실행 로직"]
+    SU["StateUnit<br/>- 실제 상태를 가진 엔티티<br/>(세션/주문/장비 등)"]
+    ST["StateTaskManager<br/>- 멀티 스레드 태스크 실행기<br/>- 비동기/지연 이벤트 처리"]
+    EC["EventCondition<br/>- 전이 실행 전 조건 검사"]
+    CB["CallBack<br/>- 전이 성공/실패 후처리"]
+    RM["RetryManager<br/>- 재시도 정책/상태 관리"]
+  end
+
+  SM --> SH
+  SH --> SEM
+  SEM --> SU
+
+  SEM --> EC
+  SEM --> CB
+  SEM --> RM
+
+  SM --> ST
+  ST --> SEM
+```
+
+## 이벤트 처리 흐름(조건 → 전이 → 콜백 → nextEvent/지연/재시도)
+```mermaid
+flowchart TB
+  IN["입력: (StateUnit, Event)"] --> H["StateHandler<br/>도메인 그룹 선택"]
+  H --> EM["StateEventManager<br/>전이 테이블 조회"]
+  EM --> COND{"EventCondition<br/>조건 통과?"}
+
+  COND -->|예| TRANS["Transition 실행<br/>StateUnit 상태 변경"]
+  COND -->|아니오| FAILCB["Fail CallBack<br/>실패 후처리"]
+
+  TRANS --> SUCCB["Success CallBack<br/>성공 후처리"]
+  SUCCB --> NEXT{"nextEvent 존재?"}
+
+  NEXT -->|아니오| DONE["종료"]
+  NEXT -->|예| DELAY{"delay 설정?"}
+  DELAY -->|없음| DISPATCH["즉시 다음 이벤트 디스패치"]
+  DELAY -->|있음| SCHED["StateTaskManager<br/>지연 스케줄링"]
+
+  SCHED --> DISPATCH
+  DISPATCH --> RETRY{"nextEventRetryCount 설정?"}
+  RETRY -->|없음| EM2["StateEventManager<br/>다음 이벤트 처리"]
+  RETRY -->|있음| RM["RetryManager<br/>재시도 상태/횟수 관리"]
+  RM --> EM2
+
+  EM2 --> COND
+```
+
+## 시퀀스 다이어그램(클라이언트 관점 호출 → 내부 처리)
+```mermaid
+sequenceDiagram
+  autonumber
+  participant C as Client Code
+  participant SM as StateManager
+  participant SH as StateHandler
+  participant EM as StateEventManager
+  participant EC as EventCondition
+  participant SU as StateUnit
+  participant CB as CallBack
+  participant ST as StateTaskManager
+  participant RM as RetryManager
+
+  C->>SM: addStateHandler("ATM")<br/>핸들러 등록
+  C->>SM: getStateHandler("ATM")<br/>핸들러 조회
+  C->>SH: addState(...)<br/>전이/콜백/nextEvent/delay/retry 등록
+  C->>SM: addStateUnit(unit)<br/>상태 유닛 등록
+  C->>SM: fireEvent(unit, event)<br/>이벤트 실행(개념적)
+
+  SM->>SH: 도메인 핸들러로 라우팅
+  SH->>EM: 전이 테이블 조회/실행 요청
+  EM->>EC: 조건 검사
+  alt 조건 통과
+    EM->>SU: 상태 변경(Prev/Cur)
+    EM->>CB: Success CallBack
+    alt nextEvent 존재
+      alt delay 존재
+        EM->>ST: 지연 실행 스케줄링
+        ST-->>EM: (시간 후) nextEvent 실행 트리거
+      else delay 없음
+        EM-->>EM: 즉시 nextEvent 실행
+      end
+      alt retry 설정
+        EM->>RM: 재시도 상태 갱신/감소
+      end
+    end
+  else 조건 실패
+    EM->>CB: Fail CallBack
+  end
+```
+
+## 상태 머신 관점(“상태 전이 테이블”을 쓰는 이유를 그대로 표현)
+```mermaid
+stateDiagram-v2
+  [*] --> REGISTERED: StateUnit 등록
+  REGISTERED --> READY: 초기 상태 설정
+
+  READY --> RUNNING: Event 발생<br/>전이 테이블 매칭
+  RUNNING --> READY: Success CallBack<br/>nextEvent 없음
+
+  RUNNING --> WAITING: nextEvent + delay
+  WAITING --> RUNNING: 지연 시간 도달<br/>StateTaskManager 실행
+
+  RUNNING --> RETRYING: 실패/조건 불만족<br/>retry 설정
+  RETRYING --> RUNNING: 재시도(횟수 남음)
+  RETRYING --> FAILED: 재시도 소진
+
+  FAILED --> [*]
+```
 
 ---
 
